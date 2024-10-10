@@ -1,0 +1,5 @@
+/.idea
+/gcloud-service-key.json
+/gemini-token.txt
+/vendor/
+/composer.lock

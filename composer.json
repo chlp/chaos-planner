@@ -1,0 +1,7 @@
+{
+    "require": {
+        "ext-grpc": "*",
+        "google/cloud-firestore": "^1.0",
+        "google/cloud-ai-platform": "^1.8"
+    }
+}

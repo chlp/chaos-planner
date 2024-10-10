@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Onboarding</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .chat-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+        }
+        .message.bot {
+            justify-content: flex-start;
+        }
+        .message.user {
+            justify-content: flex-end;
+        }
+        .bubble {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+        .bot .bubble {
+            background-color: #f0f0f0;
+            color: black;
+            border-radius: 8px 8px 8px 0;
+        }
+        .user .bubble {
+            background-color: #2e7d72;
+            color: white;
+            border-radius: 8px 8px 0 8px;
+        }
+        .header {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button {
+            background-color: #f28b82;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .input-container {
+            margin-top: 20px;
+            display: flex;
+        }
+        .input-container input {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+        }
+        .input-container button {
+            background-color: #2e7d72;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="chat-container">
+    <div class="header">Onboarding</div>
+    <div id="chat-messages"></div>
+    <div class="button-container" id="add-employee-btn" style="display: none;">
+        <button class="button">Add employees</button>
+    </div>
+    <div class="input-container" id="input-container">
+        <input type="text" id="chat-input" placeholder="Message">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    async function fetchChatState() {
+        try {
+            const response = await fetch('./chat-state'); // Запрос на сервер для получения состояния чата
+            const data = await response.json();
+            updateChat(data);
+        } catch (error) {
+            console.error('Error fetching chat state:', error);
+        }
+    }
+
+    function updateChat(data) {
+        const chatMessages = document.getElementById('chat-messages');
+        chatMessages.innerHTML = ''; // Очищаем старые сообщения
+
+        data.messages.forEach(message => {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', message.sender);
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.classList.add('bubble');
+            bubbleDiv.textContent = message.text;
+            messageDiv.appendChild(bubbleDiv);
+            chatMessages.appendChild(messageDiv);
+        });
+
+        // Показываем кнопку, если чат завершён
+        const addEmployeeBtn = document.getElementById('add-employee-btn');
+        const inputContainer = document.getElementById('input-container');
+        if (data.finished) {
+            addEmployeeBtn.style.display = 'block';
+            inputContainer.style.display = 'none';
+        } else {
+            addEmployeeBtn.style.display = 'none';
+            inputContainer.style.display = 'flex';
+        }
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('chat-input');
+        const message = input.value;
+        if (message.trim() === '') return;
+
+        try {
+            await fetch('./send-message', { // Запрос на сервер для отправки сообщения
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: message })
+            });
+            input.value = ''; // Очищаем поле ввода
+            fetchChatState(); // Обновляем чат
+        } catch (error) {
+            console.error('Error sending message:', error);
+        }
+    }
+
+    fetchChatState();
+    setInterval(fetchChatState, 1000);
+</script>
+</body>
+</html>

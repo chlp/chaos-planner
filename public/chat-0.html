@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Onboarding</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .chat-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+        }
+        .message.bot {
+            justify-content: flex-start;
+        }
+        .message.user {
+            justify-content: flex-end;
+        }
+        .bubble {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+        .bot .bubble {
+            background-color: #f0f0f0;
+            color: black;
+            border-radius: 8px 8px 8px 0;
+        }
+        .user .bubble {
+            background-color: #2e7d72;
+            color: white;
+            border-radius: 8px 8px 0 8px;
+        }
+        .header {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button {
+            background-color: #f28b82;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="chat-container">
+    <div class="header">Onboarding</div>
+    <div class="message bot">
+        <div class="bubble">When is your business open? Eg. 08:00–21:00</div>
+    </div>
+    <div class="message user">
+        <div class="bubble">My restaurant is open all days between 11:00 and 22:00.</div>
+    </div>
+    <div class="message bot">
+        <div class="bubble">Alright, your restaurant is open Mon-Sun 11:00–22:00. How much staff do you need every hour?</div>
+    </div>
+    <div class="message user">
+        <div class="bubble">I need 3 people working on every hour.</div>
+    </div>
+    <div class="message bot">
+        <div class="bubble">Perfect, I will put 3 people on every open hour. Let's add your first employees.</div>
+    </div>
+    <div class="button-container">
+        <button class="button">Add employees</button>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+    "messages": [
+        {"sender": "bot", "text": "When is your business open? Eg. 08:00–21:00"},
+        {"sender": "user", "text": "My restaurant is open all days between 11:00 and 22:00."}
+    ],
+    "finished": false
+}
